@@ -1,0 +1,27 @@
+Scrum Master : Rayane GEYER
+
+Product Backlog 
+
+Comparaison de deux outils de conversion .pdf to .txt
+Tâche prioritaire : comparaison pousée des deux outils, déterminer les limites.
+
+Sprint Planning : 
+
+Premiers tests des outils et utilisation de boucles pour automatiser les tests afin d'optimiser le travail de l'équipe SCRUM.
+
+Objectif du sprint : faire une première comparaison des deux outils sur différents fichiers .pdf. 
+Proposer des premiers constats.
+
+Daily Scrum : 
+L'utilisation des outils fonctionne. L'équipe est divisée en 3. Deux branches sont crées sur le git. La première pour l'outil pdf2txt afin d'y effectuer les premiers test. La deuxième pour pdftotext. Nous avons discuter de la façon par laquelle nous pouvons comparer les résultats. Ainsi nous avons défini un système de fichier de test. 
+
+Sprint Review :
+Le constat est sans appel pdftotext semble être le produit a favoriser. Cependant il faudra effectuer des tests plus poussé lors du prochain scrum.
+Ajustement du Backlog : il sera nécessaire de comparer de façon plus profonde les deux outils car certaines subtilités et options peuvent faire varier les résultats.
+
+Retrospective de Sprint 
+Sprint très court, mais de nombreuses idées et une équipe soudée et très compréhensive de la demande client. 
+
+Mise à jour du Backlog : aucune pour l'instant mais nous restons agile.
+
+Prochain sprint...
