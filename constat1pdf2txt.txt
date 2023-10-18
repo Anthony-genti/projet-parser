@@ -1,4 +1,4 @@
-    Constat pdftotext
+    Constat pdf2txt
     
     Il ne transforme pas les graphes en texte ni les images.
     Il ne conserve pas les traits du tableau.
