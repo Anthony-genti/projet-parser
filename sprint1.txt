@@ -1,27 +1,29 @@
 Scrum Master : Rayane GEYER
+Equipe Scrum : Anthony GENTI, Mohamed Mehdi HAZOURLI, Rayane GEYER
 
-Product Backlog 
-
-Comparaison de deux outils de conversion .pdf to .txt
-Tâche prioritaire : comparaison pousée des deux outils, déterminer les limites.
+Product Backlog proposé par le client via un fichier .pdf en ligne sur l'ENT
 
 Sprint Planning : 
 
-Premiers tests des outils et utilisation de boucles pour automatiser les tests afin d'optimiser le travail de l'équipe SCRUM.
-
-Objectif du sprint : faire une première comparaison des deux outils sur différents fichiers .pdf. 
-Proposer des premiers constats.
+Objectifs : 
+-comparer les deux outils de conversion .pdf to .txt pdf2txt et pdftotext en convertissant plusieurs fichiers .pdf vers .txt.
+-proposer un premier constat au client.
+Tâche prioritaire : comparaison pousée des deux outils, déterminer les limites et celui a favoriser.
+Tâche secondaire : utilisation de boucles pour automatiser les tests afin d'optimiser le travail de l'équipe SCRUM.
+Obstacles potentiels : outils non supportés sur certaines machines.
 
 Daily Scrum : 
 L'utilisation des outils fonctionne. L'équipe est divisée en 3. Deux branches sont crées sur le git. La première pour l'outil pdf2txt afin d'y effectuer les premiers test. La deuxième pour pdftotext. Nous avons discuter de la façon par laquelle nous pouvons comparer les résultats. Ainsi nous avons défini un système de fichier de test. 
 
 Sprint Review :
-Le constat est sans appel pdftotext semble être le produit a favoriser. Cependant il faudra effectuer des tests plus poussé lors du prochain scrum.
-Ajustement du Backlog : il sera nécessaire de comparer de façon plus profonde les deux outils car certaines subtilités et options peuvent faire varier les résultats.
+Le constat est sans appel pdftotext semble être le produit a favoriser car il possède de nombreuses options. 
+Constat du sprint : pdftotext est un meilleur choix par rapport à pdf2txt en termes de préservation du texte et de la mise en forme. Il possède une 
+meilleure prise en charge du texte et de la mise en forme. pdftotext semble conçu pour extraire du texte à partir de fichiers PDF tout en essayant de préserver la mise en forme autant que possible notamment avec l'option -layout qui conserve les sauts de lignes, les tabulations etc...
+Cependant, la qualité de la conversion dépend de la compléxité du PDF d'origine, de la présence de tableaux, graphes etc.. qui sont plus ou moins bien converti.
+Ajustement du Backlog possible, le client devra préciser ses intentions d'utilisations de façon plus rigoureuse (automatisation de conversion etc...)
 
-Retrospective de Sprint 
+Sprint Retrospective 
 Sprint très court, mais de nombreuses idées et une équipe soudée et très compréhensive de la demande client. 
+Le système de branche et d'arborescence de fichiers tests est une très bonne idée afin de comparer simplement les résultats.
 
-Mise à jour du Backlog : aucune pour l'instant mais nous restons agile.
-
-Prochain sprint...
+Mise à jour du Backlog : aucune pour l'instant mais nous restons agile en attendant le retour client pour le prochain sprint.
