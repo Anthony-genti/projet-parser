@@ -1,0 +1,14 @@
+    Constat pdftotext
+    
+    Il ne transforme pas les graphes en texte ni les images.
+    Il ne conserve pas les traits du tableau.
+    Il ne garde pas les expressions mathématiques.
+    Il ne conserve pas les titres en gras.
+    Il n'ajoute pas d'espace en début de ligne de manière intempestive.
+    Il ne conserve pas les figures.
+    Il ne garde pas le trait sous les mots.
+    Il ne conserve pas les caractères mathématiques.
+    Il ne modifie pas la mise en page.
+    Dans les graphes, seules les lettres et les chiffres sont préservés, sans courbes.
+    Il ne conserve pas la mise en forme des algorithmes.
+    La forme est conservée, mais les lignes ne sont pas mélangées.
