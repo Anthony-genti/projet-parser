@@ -1,0 +1,90 @@
+@sprint2 TD3
+
+-Constitution de l'equipe Scrum-
+
+Scrum Master : Rayane GEYER
+Equipe Scrum : Rayane GEYER Akram BOUROUINA (Anthony GENTI)
+
+-Product Backlog--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--Le parseur doit générer un fichier .txt pour chaque fichier .pdf tout en respectant la structure et les sections suivantes :
+
+    Le nom du fichier d'origine (les espaces convertis en underscores).
+    Le titre du document (une seule ligne).
+    Le résumé (abstract) de l'auteur (également une seule ligne).
+
+Le système doit accepter un dossier en tant qu'entrée, contenant les fichiers PDF, et créer un sous-dossier pour stocker les sorties en texte brut avec le même nom que les fichiers PDF. Si le sous-dossier existe, il sera supprimé.
+
+--Performance en temps d'exécution : il faut évaluer la rapidité du programme, notamment en mesurant le temps nécessaire pour convertir et extraire le texte de différents fichiers PDF.
+
+--README.md (Fichier d'instructions) -
+
+Le fichier README.md doit contenir une explication générale du système, incluant :
+
+    Une brève introduction au projet.
+    Les exigences de base pour exécuter le programme comme les modules a installer.
+    Des instructions détaillées sur la procédure à suivre pour lancer le programme.
+
+
+-Sprint Planning (Planification de l'itération)------------------------------------------------------------------------------------------------------------------------------- 
+
+--Tests de rapidité d'exécution en utilisant des boucles imbriquées dans différents langages :
+        Dans cette tâche, nous allons effectuer des tests de performance en utilisant des boucles imbriquées dans différents langages, en mettant l'accent sur C++ et Python, car ces langages sont maîtrisés par toute l'équipe.
+        Critères d'acceptation : Les tests de performance sont exécutés avec succès en C++ et Python, et les résultats sont documentés de manière concrète.
+
+--Développement d'une première version fonctionnelle du parseur :
+        Cette tâche consiste à développer une première version fonctionnelle du parseur, en respectant les spécifications définies dans le backlog produit.
+        Critères d'acceptation : Le parseur fonctionne conformément aux spécifications du backlog produit au moins de façon simpliste.
+
+--Création de la première version du README pour l'utilisation de la première version de l'outil :
+        Nous allons créer une première version du README pour documenter l'utilisation de cette première version de l'outil.
+        Critères d'acceptation : Le README est rédigé et fournit des instructions claires pour l'utilisation de l'outil.
+
+
+-Daily Scrum------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Durée : 15 minutes le 27/10/2023
+
+Discussion sur l'avancement :
+
+    Premiers constats sur les performances : C++ est priorisé car il est plus performant que Python3. Le temps pour une boucle double est de 3.20 secondes quant au C++ : 2.60 secondes.
+    Première idée orale sur le fonctionnement de l'algorithme du parseur.
+
+Obstacles :
+
+    L'instanciation du parseur en C++ peut poser des difficultés en raison de problèmes d'autorisations pour certains packages. Une réévaluation de la situation a conduit à décider de développer le projet en utilisant Python3.
+
+    Absence d'un membre de l'équipe Scrum pendant le sprint 2.
+
+
+-Sprint Review------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--Travail accompli :
+
+    Développement d'une version fonctionnelle du parseur en Python3, qui peut encore être affinée et optimisée lors du prochain sprint.
+    Création d'un README expliquant le fonctionnement général du parseur.
+	
+--Commentaires sur le travail accompli : 
+
+    Comparaison efficace des différents langes proposés par le client. Cependant, l'algorithme du parsreur ne détecte pas tout les titres et abstract. Les noms de fichiers
+    quant à eux sont tous trouver et insérer dans le .txt de sortie.
+    Possibilité d'optimiser davantage le parseur pour exploiter au mieux les performances de Python3.
+    Ajout de commentaires pour faciliter la lecture du code.
+ 
+    
+-Sprint Retrospective-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Évaluation du processus de travail
+
+Points forts :
+
+    Agilité de l'équipe. L'équipe s'est rapidement adaptée face aux obstacles rencontrés avec C++.
+    Collaboration : l'équipe reste réactive face aux changements et est ouverte à des modifications spontanées.
+    Livraison réussie en temps et en heure en ayant implémenté de façon simple les fonctionnalitées attendues.
+
+Points à améliorer pour le prochain sprint :
+
+    Organisation de l'équipe dans la répartition des tâches pour instaurer une meilleure autogestion des équipiers. 
+    Meilleure estimation du temps nécessaire pour les tâches : la mesure du temps était beaucoup plus rapide que prévue.
+    Implication plus directe du propriétaire du produit afin de clarifier ses demandes.
+
