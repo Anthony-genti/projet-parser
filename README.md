@@ -1,4 +1,4 @@
-@ReadMe.md
+@README.md
 
 Programme de Conversion de PDF en Texte
 
