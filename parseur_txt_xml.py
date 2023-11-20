@@ -46,9 +46,9 @@ def parseur(fichier_pdf, dossier_sortie, sortie_texte=False, sortie_xml=False):
                 with open(f"{fichier_sortie}.xml", 'w', encoding='utf-8') as fichier_xml:
                     fichier_xml.write(xml_content)
 
-            # Si l'option XML est spécifiée, n'écris pas le fichier texte
+            # Si l'option XML est spécifiée et pas l'option texte, ne pas écrire le fichier texte
             if sortie_xml and not sortie_texte:
-                return
+                os.remove(f"{fichier_sortie}.txt")
 
         else:
             print(f"Erreur lors de l'extraction du texte : {resultat.stderr.decode('utf-8').strip()}")
