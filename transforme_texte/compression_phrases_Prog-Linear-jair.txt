@@ -1,3 +1,0 @@
-Nom du fichier d'origine : compression_phrases_Prog-Linear-jair
-Titre du papier : Journal_of_Artificial_Intelligence_Research_31_(2008)_399-429
-Résumé de l'auteur (Abstract/Résumé) : Sentence compression holds promise for many applications ranging from summarization to subtitle generation. Our work views sentence compression as an optimization problem and uses integer linear programming (ILP) to infer globally optimal compressions in the presence of linguistically motivated constraints. We show how previous formulations of sentence compression can be recast as ILPs and extend these models with novel global constraints. Experimental results on written and spoken texts demonstrate improvements over state-of-the-art models.  1.
