@@ -26,9 +26,7 @@ Pour l'installation de notre outil vérifiez si la bibliothèque Python PyPDF2 e
 pip install PyPDF2
 
 Pour l'utilisation :
-
-1. Placez vos fichiers PDF dans un dossier de votre choix.
-2. Exécutez le programme en utilisant cette commande :
+1. Exécutez le programme en utilisant cette commande :
 
 python parseur.py /chemin/vers/votre/fichier_pdf /chemin/vers/dossier_de_sortie -t | -x .
 
