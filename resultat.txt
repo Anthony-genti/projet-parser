@@ -1,0 +1,50 @@
+Le nom du fichier d’origine : ACL2004-HEADLINE
+Le titre du papier : Hybrid_Headlines:_Combining_Topics_and_Sentence_Compression
+La section auteurs et leur adresse : 
+Le résumé de l’article : This paper presents Topiary, a headlinegeneration system that creates very short, informative summaries for news stories by combining sentence compression and unsupervised topic discovery. We will show that the combination of linguistically motivated sentence compression with statistically selected topic terms performs better than either alone, according to some automatic summary evaluation measures. In addition we describe experimental results establishing an appropriate extrinsic task on which to measure the effect of summarization on human performance. We demonstrate the usefulness of headlines in comparison to full texts in the context of this extrinsic task.
+
+Le nom du fichier d’origine : Boudin-Torres-2006
+Le titre du papier : A_Scalable_MMR_Approach_to_Sentence_Scoring
+La section auteurs et leur adresse : 
+Le résumé de l’article : redundancy with previously read documents (history) has to be removed from the extract. A natural way to go about update summarization would be extracting temporal tags (dates, elapsed times, temporal expressions...) (Mani and Wilson, 2000) or to automatically construct the timeline from documents (Swan and Allan, 2000). These temporal marks could be used to focus extracts on the most recently written facts. However, most recently written facts are not necessarily new facts. Machine Reading (MR) was used by (Hickl et al., 2007) to construct knowledge representations from clusters of documents. Sentences containing “new” information (i.e. that could not be inferred by any previously considered document) are selected to generate summary. However, this highly efficient approach (best system in DUC 2007 update) requires large linguistic resources. (Witte et al., 2007) propose a rule-based system based on fuzzy coreference cluster graphs. Again, this approach requires to manually write the sentence ranking scheme. Several strategies remaining on post-processing redundancy removal techniques have been suggested. Extracts constructed from history were used by (Boudin and TorresMoreno, 2007) to minimize history’s redundancy. (Lin et al., 2007) have proposed a modified Maximal Marginal Relevance (MMR) (Carbonell and Goldstein, 1998) re-ranker during sentence selection, constructing the summary by incrementally re-ranking sentences. In this paper, we propose a scalable sentence scoring method for update summarization derived from MMR. Motivated by the need for relevant novelty, candidate sentences are selected according to a combined criterion of query relevance and dissimilarity with previously read sentences. The rest of the paper is organized as follows. Section 2  We present S MMR, a scalable sentence scoring method for query-oriented update summarization. Sentences are scored thanks to a criterion combining query relevance and dissimilarity with already read documents (history). As the amount of data in history increases, non-redundancy is prioritized over query-relevance. We show that S MMR achieves promising results on the DUC 2007 update corpus.
+
+Le nom du fichier d’origine : compression
+Le titre du papier : Multi-Candidate_Reduction:_Sentence_Compression_as_a_Tool_for
+La section auteurs et leur adresse : 
+Le résumé de l’article : This article examines the application of two single-document sentence compression techniques to the problem of multi-document summarization—a “parse-and-trim” approach and a statistical noisy-channel approach. We introduce the Multi-Candidate Reduction (MCR) framework for multi-document summarization, in which many compressed candidates are generated for each source sentence. These candidates are then selected for inclusion in the final summary based on a combination of static and dynamic features. Evaluations demonstrate that sentence compression is a valuable component of a larger multi-document summarization framework. Keywords: headline generation, summarization, parse-and-trim, Hidden Markov Model PACS: Artificial intelligence, 07.05.Mh; Computer science and technology, 89.20.Ff; Spoken languages, processing of, 43.71.Sy
+
+Le nom du fichier d’origine : compression_phrases_Prog-Linear-jair
+Le titre du papier : Journal_of_Artificial_Intelligence_Research_31_(2008)_399-429
+La section auteurs et leur adresse : 
+Le résumé de l’article : Sentence compression holds promise for many applications ranging from summarization to subtitle generation. Our work views sentence compression as an optimization problem and uses integer linear programming (ILP) to infer globally optimal compressions in the presence of linguistically motivated constraints. We show how previous formulations of sentence compression can be recast as ILPs and extend these models with novel global constraints. Experimental results on written and spoken texts demonstrate improvements over state-of-the-art models.  1.
+
+Le nom du fichier d’origine : hybrid_approach
+Le titre du papier : Sentence_Compression_for_Automated_Subtitling:_A_Hybrid_Approach
+La section auteurs et leur adresse : 
+Le résumé de l’article : In this paper a sentence compression tool is described. We describe how an input sentence gets analysed by using a.o. a tagger, a shallow parser and a subordinate clause detector, and how, based on this analysis, several compressed versions of this sentence are generated, each with an associated estimated probability. These probabilities were estimated from a parallel transcript/subtitle corpus. To avoid ungrammatical sentences, the tool also makes use of a number of rules. The evaluation was done on three different pronunciation speeds, averaging sentence reduction rates of 40% to 17%. The number of reasonable reductions ranges between 32.9% and 51%, depending on the average estimated pronunciation speed.
+
+Le nom du fichier d’origine : marcu_statistics_sentence_pass_one
+Le titre du papier : From:_AAAI-00_Proceedings._Copyright_©_2000,_AAAI_(www.aaai.org)._All_rights_reserved.
+La section auteurs et leur adresse : 
+Le résumé de l’article : When humans produce summaries of documents, they do not simply extract sentences and concatenate them. Rather, they create new sentences that are grammatical, that cohere with one another, and that capture the most salient pieces of information in the original document. Given that large collections of text/abstract pairs are available online, it is now possible to envision algorithms that are trained to mimic this process. In this paper, we focus on sentence compression, a simpler version of this larger challenge. We aim to achieve two goals simultaneously: our compressions should be grammatical, and they should retain the most important pieces of information. These two goals can conﬂict. We devise both noisy-channel and decision-tree approaches to the problem, and we evaluate results against manual compressions and a simple baseline.
+
+Le nom du fichier d’origine : mikheev
+Le titre du papier : Periods,_Capitalized_Words,_etc.
+La section auteurs et leur adresse : 
+Le résumé de l’article : 
+
+Le nom du fichier d’origine : probabilistic_sentence_reduction
+Le titre du papier : Probabilistic_Sentence_Reduction_Using_Support_Vector_Machines
+La section auteurs et leur adresse : 
+Le résumé de l’article : This paper investigates a novel application of support vector machines (SVMs) for sentence reduction. We also propose a new probabilistic sentence reduction method based on support vector machine learning. Experimental results show that the proposed methods outperform earlier methods in term of sentence reduction performance.
+
+Le nom du fichier d’origine : Stolcke_1996_Automatic_linguistic
+Le titre du papier : AUTOMATIC_LINGUISTIC_SEGMENTATION
+La section auteurs et leur adresse : 
+Le résumé de l’article : 
+
+Le nom du fichier d’origine : Torres
+Le titre du papier : Summary_Evaluation
+La section auteurs et leur adresse : 
+Le résumé de l’article : 
+

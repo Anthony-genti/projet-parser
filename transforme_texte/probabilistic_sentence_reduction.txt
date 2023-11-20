@@ -1,0 +1,3 @@
+Nom du fichier d'origine : probabilistic_sentence_reduction
+Titre du papier : Probabilistic_Sentence_Reduction_Using_Support_Vector_Machines
+Résumé de l'auteur (Abstract/Résumé) : This paper investigates a novel application of support vector machines (SVMs) for sentence reduction. We also propose a new probabilistic sentence reduction method based on support vector machine learning. Experimental results show that the proposed methods outperform earlier methods in term of sentence reduction performance.
