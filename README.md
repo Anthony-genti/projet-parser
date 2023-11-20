@@ -31,6 +31,9 @@ Pour l'utilisation :
 2. Exécutez le programme en utilisant cette commande :
 
 python parseur.py /chemin/vers/votre/fichier_pdf /chemin/vers/dossier_de_sortie -t | -x .
+
 /chemin/vers/votre/fichier_pdf : Remplacez ceci par le chemin absolu du dossier contenant vos fichiers PDF.
+
 /chemin/vers/dossier_de_sortie : Remplacez ceci par le chemin absolu du dossier où vous souhaitez enregistrer les fichiers texte convertis avec les informations extraites.
+
 version texte (-t) ou version XML (-x).
