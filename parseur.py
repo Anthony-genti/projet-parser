@@ -2,6 +2,7 @@ import subprocess
 import os
 import re
 import argparse
+from pathlib import Path
 
 #Conversion en utilisant pdftotext vers un fichier txt
 def conversion(nom_pdf):
@@ -479,8 +480,8 @@ def parseur(listePDF) :
         print(" ")
     
     
-    
-fichiers_pdf = [fichier for fichier in os.listdir()]  
+#Recuperer uniquement les fichiers pdf    
+fichiers_pdf = [fichier for fichier in os.listdir() if Path(fichier).suffix.lower() == '.pdf']  
 parseur(fichiers_pdf)  
     
 pdf_nom = ['Torres','ACL2004-HEADLINE','Boudin-Torres-2006','compression','compression_phrases_Prog-Linear-jair','hybrid_approach','marcu_statistics_sentence_pass_one','mikheev','probabilistic_sentence_reduction','Stolcke_1996_Automatic_linguistic']
