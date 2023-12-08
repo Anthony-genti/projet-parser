@@ -1,0 +1,341 @@
+<nom>An_Improved_Branch-and-Cut_Code_for_the_Maximum_Balanced_Subgraph_of_a_Signed_Graph</nom>
+<titre>An improved Branch-and-cut code for the maximum
+balanced subgraph of a signed graph
+</titre> 
+<auteur>Rosa Figueiredoa,∗, Yuri Frotab
+
+arXiv:1312.4345v1 [cs.DM] 16 Dec 2013
+
+a CIDMA,
+
+Department of Mathematics, University of Aveiro
+3810-193 Aveiro, Portugal.
+rosa.figueiredo@ua.pt
+b Department of Computer Science, Fluminense Federal University
+24210-240 Niterói-RJ, Brazil.
+yuri@ic.uff.br
+
+</auteur>
+<abstract>Abstract
+The Maximum Balanced Subgraph Problem (MBSP) is the problem of finding a
+subgraph of a signed graph that is balanced and maximizes the cardinality of its
+vertex set. We are interested in the exact solution of the problem: an improved
+version of a branch-and-cut algorithm is proposed. Extensive computational
+experiments are carried out on a set of instances from three applications previously discussed in the literature as well as on a set of random instances.
+Keywords: Balanced signed graph; Branch-and-cut; Portfolio analysis; Network matrix; Community structure.
+
+∗ Corresponding author. Fax number: +351 234370066 Email: rosa.figueiredo@ua.pt
+Rosa Figueiredo is supported by FEDER founds through COMPETE-Operational Programme
+Factors of Competitiveness and by Portuguese founds through the CIDMA (University
+of Aveiro) and FCT, within project PEst-C/MAT/UI4106/2011 with COMPETE number
+FCOMP-01-0124-FEDER-022690.
+
+Preprint submitted to Elsevier
+
+December 17, 2013
+
+1. Introduction
+Let G = (V, E) be an undirected graph where V = {1, 2, . . . , n} is the set
+of vertices and E is the set of edges connecting pairs of vertices. Consider a
+function s : E → {+, −} that assigns a sign to each edge in E. An undirected
+graph G together with a function s is called a signed graph. An edge e ∈ E is
+called negative if s(e) = − and positive if s(e) = +.
+In the last decades, signed graphs have shown to be a very attractive discrete
+structure for social network researchers [1, 8, 9, 16, 21] and for researchers
+in other scientific areas, including portfolio analysis in risk management [14,
+15], biological systems [7, 15], efficient document classification [3], detection
+of embedded matrix structures [12] and community structure [17, 20]. The
+common element among all these applications is that all of them are defined
+in a collaborative vs. conflicting environment represented over a signed graph.
+We refer the reader to [22] for a bibliography of signed graphs. Is this work we
+consider the Maximum balanced subgraph problem (MBSP) defined next.
+Let G = (V, E, s) denote a signed graph and let E − and E + denote, respectively, the set of negative and positive edges in G. Also, for a vertex set S ⊆ V ,
+let E[S] = {(i, j) ∈ E | i, j ∈ S} denote the subset of edges induced by S. A
+signed graph G = (V, E, s) is balanced if its vertex set can be partitioned into
+sets W (possibly empty) and V \ W in such a way that E[W ] ∪ E[V \ W ] = E + .
+Given a signed graph G = (V, E, s), the MBSP is the problem of finding a
+subgraph H = (V 0 , E 0 , s) of G such that H is balanced and maximizes the
+cardinality of V 0 .
+The MBSP is known to be an NP-hard problem [6] although the problem
+of detecting balance in signed graphs can be solved in polynomial time [13]. In
+the literature, the MBSP has already been applied in the detection of embedded
+matrix structures [10, 11, 12], in portfolio analysis in risk management [10] and
+community structure [10].
+The problem of detecting a maximum embedded reflected network (DMERN)
+is reduced to the MBSP in [12]. Most of the existing solution approaches to the
+MBSP were in fact proposed for the solution of the DMERN problem. The
+literature proposes various heuristics for the solution of the DMERN problem
+(for references see [12]). Lately, Figueiredo et al. [11] developed the first exact solution approach for the MBSP: a branch-and-cut algorithm based on the
+signed graph reformulation from Gulpinar et al. [12] for the DMERN problem.
+Computational experiments were carried out over a set of instances found in
+the literature as a test set for the DMERN problem. Almost all these instances
+were solved to optimality in a few seconds showing that they were not appropriate for assessing the quality of a heuristic approach to the problem. Recently,
+Figueiredo et al. [10] introduced applications of the MBSP in other two different
+research areas: portfolio analysis in risk management and community structure.
+These authors also provided a new set of benchmark instances of the MBSP
+(including a set of difficult instances for the DMERN problem) and contributed
+to the efficient solution of the problem by developing a pre-processing routine,
+an efficient GRASP metaheuristic, and improved versions of a greedy heuristic
+2
+
+proposed in [12].
+In this work we contribute to the efficient solution of the MBSP by developing
+an improved version of the branch-and-cut algorithm proposed by Figueiredo et
+al. [11]. We introduce a new branching rule to the problem based on the odd
+negative cycle inequalities. Moreover, we improve the cut generation component
+of the branch-and-cut algorithm by implementing new separation routines and
+by using a cut pool separation strategy.
+The remainder of the paper is structured as follows. The integer programming formulation and the branch-and-cut algorithm proposed in [11] to the
+MBSP are outlined in Section 2. The improved version of the branch-and-cut
+algorithm is described in Section 3. In Section 4, computational results are
+reported for random instances as well as for instances of the three applications
+previously mentioned. In Section 5 we present concluding remarks.
+We next give some notations and definitions to be used throughout the paper.
+For an edge set B ⊆ E, let G[B] denote the subgraph of G induced by B. A
+set K ⊆ V is called a clique if each pair of vertices in K is joined by an edge.
+A set I ⊆ V is called a stable set if no pair of vertices in I is joined by an edge.
+We represent a cycle by its vertex set C ⊆ V . In this text, a signed graph is
+allowed to have parallel edges but no loops. Also, we assume that parallel edges
+have always opposite signs.
+2. Integer programming formulation and branch-and-cut
+The integer programming formulation and the branch-and-cut algorithm introduced in [11] are described next.
+2.1. Integer programming formulation
+It is well known that a signed graph is balanced if and only if it does not
+contain a parallel edge or a cycle with an odd number of negative edges [5, 12,
+22]. Let C o (E) be the set of all odd negative cycles in G, i.e., cycles with no
+parallel edges and with an odd number of negative edges. Throughout this text,
+a cycle C ∈ C o (E) is called an odd negative cycle. The formulation uses binary
+decision variables y ∈ {0, 1}|V | defined in the following way. For all i ∈ V , yi
+is equal to 1 if vertex i ∈ V belongs to the balanced subgraph, and is equal
+to 0 otherwise.
+We use the vector notation y = (yi ), i ∈ V , and the notation
+P
+y(V 0 ) = i∈V 0 yi for V 0 ⊆ V . The formulation follows.
+Maximize y(V )
+
+(1)
+−
+
+subject to yi + yj ≤ 1,
+y(C) ≤ |C| − 1,
+yi ∈ {0, 1},
+
++
+
+∀ (i, j) ∈ E ∩ E ,
+
+(2)
+
+∀ C ∈ C o (E),
+
+(3)
+
+∀ i ∈ V.
+
+(4)
+
+Consider a parallel edge (i, j) ∈ E − ∩ E + . Constraints (2) ensure vertices i and
+j cannot belong together to the balanced subgraph. Constraints (3), called odd
+negative cycle inequalities, forbid cycles with an odd number of negative edges
+3
+
+in the subgraph described by variables y. These constraints force variables y
+to define a balanced subgraph. Finally, the objective function (1) looks for a
+maximum balanced subgraph. The formulation has n variables and, due to
+constraints (3), might have an exponential number of constraints. Let us refer
+to this formulation as Y (G, s). By changing the integrality constraints (4) in
+formulation Y (G, s) by the set of trivial inequalities 0 ≤ yi ≤ 1, i ∈ V , we
+obtain a linear relaxation to the MBSP.
+2.2. A branch-and-cut algorithm
+The branch-and-cut algorithm developed in [11] is based on formulation
+Y (G, s), uses a standard 0–1 branching rule and has three basic components:
+the initial formulation, the cut generation and the primal heuristic.
+Initial formulation. The initial formulation is defined as
+maximize y(V )
+subject to y(K) ≤ 1,
+y(C) ≤ |C| − 1,
+y(K) ≤ 2,
+0 ≤ yi ≤ 1,
+
+∀ K ∈ L,
+
+(5)
+
+∀ C ∈ M ⊆ C o (E),
+
+(6)
+
+∀ K ∈ N,
+
+(7)
+
+∀ i ∈ V,
+
+(8)
+
+where (5) are clique inequalities from the stable set problem [19] defined over a
+set of cliques L in G[E + ∩ E − ]; (6) is a subset of inequalities (3) defined over
+a set of odd negative cycles M ; (7) is a subset of inequalities from a family of
+negative clique inequalities introduced in [11] for the MBSP and defined over a
+set of cliques N in G[E − ]; (8) is the set of trivial inequalities. Greedy procedures
+described in [11] are used to generate sets L, M and N .
+Cut generation. After an LP has been solved in the branch-and-cut tree, the
+algorithm check if the solution is integer feasible. If this is not the case, the cut
+generation procedure is called and a set of separation routines is executed (a
+limit of 100 cuts per iteration is set). If no violated inequality is found or if a limit
+of 10 cut generations rounds is reached, the algorithm enter in the branching
+phase. The cut generation component described in [11] has two separation
+procedures. An exact separation procedure is used to generate violated odd
+negative cycle inequalities (3). This separation routine is based on a polynomial
+algorithm described in [4] to solve the separation problem for cut inequalities. A
+heuristic separation procedure defined in [11] is used to generate violated clique
+inequalities also introduced in [11].
+Primal heuristic and branching rule. A rounding primal heuristic is executed in [11] every time a fractional solution is found. Moreover, a standard 0–1
+branching rule is used with the same branching priority assigned to each variable
+and the branch-and-cut tree is investigated with the best-bound-first strategy.
+The authors reported they have also implemented a version of the branching
+
+4
+
+rule proposed in [2]. Although this branching rule has been successfully applied
+to solve the stable set problem, they obtained better results with the standard
+0–1 branching rule.
+3. An improved branch-and-cut code
+In this work, the following new routines were added to the branch-and-cut
+algorithm described in Section 2.
+Branching on the odd negative cycle inequalities. Our branching rule
+is based on the odd negative cycle inequalities (3). The intuition behind this
+cycle based branching is the attempt to generate more balanced enumerative
+trees. The standard 0–1 branching rule can be very asymmetrical producing
+unbalanced enumerative trees.
+Let ȳ ∈ R be the optimal fractional solution of a node in the search tree. Let
+C 0 ⊆ C o (E) be the subset of odd negative cycles such that each cycle C ∈ C 0
+satisfy the following conditions:
+• constraint (3) defined by C 0 is a binding one in the current formulation,
+• there exists a vertex i ∈ C 0 such that ȳi is fractional.
+The standard 0–1 branching rule is used whenever C 0 is an empty set. If it
+is not the case, let C̄ be the smallest cycle in C 0 . Split C̄ into the sets C̄ 1 and
+C̄ 2 such that C̄ = C̄ 1 ∪ C̄ 2 , C̄ 1 ∩ C̄ 2 = ∅ and y(C̄ 1 ) is fractional. We create
+three branches in the search tree:
+(i) y(C̄ 1 ) ≤ |C̄ 1 | − 1 and y(C̄ 2 ) = |C̄ 2 |;
+(ii) y(C̄ 1 ) = |C̄ 1 | and y(C̄ 2 ) ≤ |C̄ 2 | − 1;
+(iii) y(C̄ 1 ) ≤ |C̄ 1 | − 1 and y(C̄ 2 ) ≤ |C̄ 2 | − 1.
+Separation routines. In this work, we introduce two new separation procedures to the cut generation component of the branch-and-cut algorithm described in Section 2.
+The authors in [11] proved that lifted odd hole inequalities (from the stable
+set problem) defined over the set of parallel edges E + ∩ E − are valid inequalities for the MBSP. They have also proved that, if the support graph of these
+inequalities satisfy certain conditions they are facet defining inequalities to the
+problem. We implemented a separation procedure described in [18] to the lifted
+odd hole inequalities. Also, the authors indicated in [11] that a very similar lifting procedure could be applied to strengthen constraints (3). We implemented
+this lifting procedure to the odd negative cycle inequalities satisfying |C| ≤ 20.
+In both cases, a very small instance of the MBSP must be solved at each iteration of the lifting procedures. In our implementation, these small problems
+were solved by simple enumerative algorithms.
+
+5
+
+Moreover, we added a cut pool to the branch-and-cut code: any violated
+inequality included to the active formulation of a node in the branch-and-cut
+tree is also included to the cut pool. As we have mentioned in Section 2, after an
+LP has been solved in the branch-and-cut tree, we check if the solution is integer
+feasible. If this is not the case, the cut generation procedure is then called.
+Before running any separation routine from our cut generation procedure, we
+check if there are violated cuts in the cut pool. In positive case, no separation
+routine is called and the violated cuts (limited to 100 cuts) are immediately
+added to the active formulation.
+4. Computational experiments
+We implemented the improved branch-and-cut algorithm described in Section 3 using the formulation defined by (5)-(8). Both branch-and-cuts (BC), the
+previous one and the improved version, were implemented in C++ running on
+a Intel(R) Pentium(R) 4 CPU 3.06 GHz, equipped with 3 GB of RAM. We use
+Xpress-Optimizer 20.00.21 to implement the components of these enumerative
+algorithms. The maximum running time per instance was set at 3600 seconds.
+The same instance classes reported in [10] were tested here to allow for a better
+comparison of the performances of the improved BC and the BC algorithm proposed earlier. The class Random consists of 216 randomized instances divided
+into two groups: Group 1 without parallel edges and Group 2 with parallel
+edges. The class UNGA is composed of 63 instances derived from the community structure of networks representing voting on resolutions in the United
+Nations General Assembly. The class new DMERN consists of 316 signed graphs
+coming from a set of general mixed integer programs. Finally, the class Portifolio is composed by 850 instances generated from market graphs. The entire
+benchmark is available for download in www.ic.uff.br/∼yuri/mbsp.html.
+We first investigate the behavior of the Random instances, the results obtained by the two methods are summarized in Table 1. This table exhibits, for
+both groups, average times per | V |, and percentage gaps per | V |, d (density
+of the graph) and the rates | E − | / | E + | and | E + ∩ E − |. Multicolumn
+Time, gives us average times (in seconds) spent to solve instances to optimality; the values in brackets show the number of instances solved to optimality
+(“-” means no instance was solved within the time limit). Multicolumn %Gap
+presents the average of percentage gaps calculated over the set of unsolved instances. The percentage gap of each instance is calculated between the best
+integer solution found and the final upper bound. For each group of instances,
+the first and the second lines present, respectively, the results obtained with the
+original and the improved code of the branch-and-cut algorithm. The results
+obtained with the improved version are slightly better: six more instances were
+solved to optimality and all the average gaps were reduced.
+In the second experiment, we analyze the performance of the Portifolio instances. Table 2 reports the obtained results. The first two columns give the
+number of vertices and a threshold value t used to generate the instances [10].
+The next three columns give the average time, the average of percentage gaps
+6
+
+(as defined in Table 1) and the number of evaluated nodes in the original BC
+tree, respectively. The last three columns give the same data for the improved
+BC. Algorithm improved BC solved 227 out of 850 instances within 1 hour of
+processing time, while the original BC managed to solve only 217 instances. The
+average gap for the original BC over the set of unsolved instances is 17.91%,
+while the same value for the improved version is 9.41%. Furthermore, Figure 1
+shows that the improved BC presents tighter gaps for almost the entire set of
+Portifolio instances than the original one.
+In the third experiment, we investigate the behavior of the UNGA instances.
+We notice that these instances are extremely easy to solve. No matter the
+number of vertices or the parameters used to compose the instance, both BC
+codes were always able to solve all of them in a few seconds and in the root
+of the branch-and-bound tree. So, we could not draw any conclusion from this
+class of instance.
+In our last experiment, both methods were applied to each one of the 316 new
+DMERN instances [10]. Table 3 shows the results for the instances remaining
+unsolved and the instances solved to optimality in more than one minute. The
+first three columns in this table give us information about the instances: the
+Netlib instance name, the number of vertices and the number of edges. The
+next three columns give the number of negative, positive and parallel edges,
+respectively. Similarly to the previous table, the next set of three columns gives
+us information about the solution obtained with the original BC code: the time,
+the percentage gap, and the total number of nodes in the branch-and-bound tree.
+The last three columns give the same data for the improved BC. From this set
+of instances, we can extract 25 instances not solved to optimality by the original
+BC code with average gap of 11.42% of unsolved instances, while the improved
+BC could not solve 21 instances but with a much tighter average gap of 4.85%.
+One can notice that the implementation of new separation routines and a new
+branching rule used in the improved BC led to a better performance and a high
+number of evaluated nodes within the time limit.
+5. Final remarks
+In this work, we proposed an improved branch-and-cut algorithm based on
+the integer programming formulation and the BC algorithm proposed in [11],
+together with a new branching rule based on the odd negative cycle inequalities
+and improved cutting plane routines and strategies. The instance classes reported in [10] were used to compare the performances of the improved BC and
+the original BC algorithm proposed in [11]. The results obtained by the new approach were superior to those given by the previously existing branch-and-cut.
+The new method solved 431 out of 1445 instances within 1 hour of processing
+time, while the original algorithm managed to solve only 410 instances. Moreover, as we saw in Section 4, considering only the set of unsolved instances, the
+average gap obtained with the improved BC was smaller than the average gap
+obtained with the original BC from [11].
+
+7
+
+8
+
+Group 2
+
+Group 1
+
+Instances
+200
+−
+−
+−
+−
+
+50
+0
+0
+0
+0
+
+</abstract>
+<introduction></introduction>
+<corps></corps>
+<conclusion></conclusion>
+<acknowledgement></acknowledgement>
+<references></references>
+<discussion></discussion>
