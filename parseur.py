@@ -1,12 +1,11 @@
 import subprocess
 import os
 import re
-import xml.etree.ElementTree as ET
 import argparse
 
 #Conversion en utilisant pdftotext vers un fichier txt
 def conversion(nom_pdf):
-    fichier_pdf = nom_pdf + '.pdf'
+    fichier_pdf = nom_pdf 
     fichier_sortie = nom_pdf + '.txt'
 
     cmd = f"pdftotext -layout'{fichier_pdf}' '{fichier_sortie}'"
@@ -295,14 +294,14 @@ def abstract(fichierTexte):
 
 #Recuperer auteur
 def auteur(fichierTexte):
-    # Obtenir l'extension du fichier d'entrée
+   # Obtenir l'extension du fichier d'entrée
     nom_fichier, extension = fichierTexte.rsplit('.', 1)
-
+    
     # Créer une copie distincte du fichier original avec la même extension
     fichier_copie = nom_fichier + '_copie.' + extension
 
-    ligneTitre = ''
-
+    ligneTitre=''  
+   
     with open(fichier_copie, 'r') as file:
         texte = file.read()
         resultat = re.search(r'<titre>(.*?)</titre>', texte, re.DOTALL)
@@ -311,27 +310,25 @@ def auteur(fichierTexte):
             if len(ligneTitre) >= 2:
                 x1 = ligneTitre[0][:10]
                 x2 = ligneTitre[1][:10]
+
             else:
-                x1 = ligneTitre[0][:10]
-                x2 = x1
+               x1 = ligneTitre[0][:10]
+               x2 = x1
+            
 
     with open(fichierTexte, 'r', encoding='utf-8') as original:
         lignes = original.readlines()
         with open(fichier_copie, 'a', encoding='utf-8') as copie:
-            copie.write("\n")
-            copie.write("<auteur>")
-            for line in lignes:
-                try:
-                    if (line.startswith("Abstract") or line.startswith("Abstract-") or
-                            line.startswith("In this article") or line.startswith("ABSTRACT")):
-                        copie.write("</auteur>")
-                        return
-                    if not x1 in line:
-                        if not x2 in line:
-                            copie.write(line)
-                except UnicodeDecodeError:
-                    # En cas d'erreur, ne rien faire
-                    pass
+            copie.write("\n") 
+            copie.write("<auteur>") 
+            for line in lignes :
+                if (line.startswith("Abstract") or line.startswith("Abstract-") or line.startswith("In this article") or line.startswith("ABSTRACT")) :
+                    copie.write("</auteur>")
+                    return   
+                                   
+                if not x1 in line :
+                    if not x2 in line :
+                        copie.write(line)
                         
                                
 def conclusion(fichierTexte):
@@ -406,138 +403,87 @@ def discussion(fichierTexte):
                 if discussion_started:
                     copie.write(line)
 
-      
+           
 
-
-def gestionCasExceptionnel(fichierTexte, chaineDebut, chaineFin, chaineApresLaquelleInserer):
-    with open(fichierTexte, 'r', encoding='utf-8') as file:
-        lignes = file.readlines()
-        debut = False
-        fin = False
-        extrait = []
-
-        for line in lignes:
-            if chaineDebut in line:
-                debut = True
-
-            if debut and not fin:
-                extrait.append(line)
-
-            if chaineFin in line:
-                fin = True
-
-        file.seek(0)  # Retour au début du fichier
-        with open(fichierTexte, 'w', encoding='utf-8') as output_file:
-            for line in lignes:
-                if chaineApresLaquelleInserer in line:
-                    output_file.writelines(extrait)
-                output_file.write(line)
-
-
-
-
-def convert_txt_to_xml(input_file):
-    # Vérifier si le fichier texte existe
-    if not os.path.isfile(input_file):
-        return "Le fichier texte spécifié n'existe pas."
-
-    output_file = os.path.splitext(input_file)[0] + ".xml"  # Nom du fichier XML de sortie
-
-    # Créer l'élément racine du XML
-    root = ET.Element("Root")
-
-    # Lire le contenu du fichier texte
-    with open(input_file, 'r') as file:
-        lines = file.readlines()
-
-    # Convertir chaque ligne du fichier texte en éléments XML
-    for line in lines:
-        key, value = line.strip().split(': ')
-        element = ET.SubElement(root, key)
-        element.text = value
-
-    # Créer l'arbre XML
-    tree = ET.ElementTree(root)
-
-    # Enregistrer l'arbre XML dans un fichier
-    tree.write(output_file)
-
-    return f"Le fichier XML '{output_file}' a été créé avec succès."
-
-
-
-def parseur(listeFichierPDF, mode):
+def parseur(listePDF) :
+    #Doit contenir les pdf
     fichiers_a_parser = []
 
-    for i, x in enumerate(listeFichierPDF, 1):
+    for i, x in enumerate(listePDF, 1):
         nom_pdf = os.path.splitext(x)[0]  # Obtenir le nom original sans extension
         print(f"{i}. Nom du fichier PDF sans extension : {nom_pdf}")
 
-    if mode == 't':
-        choix = input("Entrez les numéros des fichiers PDF à parser (séparés par des espaces) : ")
-        nums = [int(num.strip()) for num in choix.split()]
+    choix = input("Entrez les numéros des fichiers PDF à parser (séparés par des espaces) : ")
+    nums = [int(num.strip()) for num in choix.split()]
 
-        for num in nums:
-            pdf = listeFichierPDF[num - 1]
-            txt_output = conversion(pdf)
-            fichiers_a_parser.append(f"{os.path.splitext(pdf)[0]}.txt")
-
-        for t in fichiers_a_parser:
-            titre(t)
-            auteur(t)
-            abstract(t)
-            introduction(t)
-            corps(t)
-            conclusion(t)
-            acknowledgement(t)
-            references(t)
-            discussion(t)   
-
-    elif mode == 'x':
-        choix = input("Entrez les numéros des fichiers PDF à parser (séparés par des espaces) : ")
-        nums = [int(num.strip()) for num in choix.split()]
-        fichier_a_convertir_en_xml = []
-
-        for num in nums:
-            pdf = listeFichierPDF[num - 1]
-            txt_output = conversion(pdf)
-            fichiers_a_parser.append(f"{os.path.splitext(pdf)[0]}.txt")
-
-        for t in fichiers_a_parser:
-            titre(t)
-            auteur(t)
-            abstract(t)
-            introduction(t)
-            corps(t)
-            conclusion(t)
-            acknowledgement(t)
-            references(t)
-            discussion(t)   
-            fichier_a_convertir_en_xml.append(t.replace(".txt", "_copie.txt"))
+    for num in nums:
+        pdf = listePDF[num - 1]
+        fichiers_a_parser.append(f"{pdf}")
         
-        #for y in fichier_a_convertir_en_xml:
-            #convert_txt_to_xml(y)
-                      
+    #A ce moment la il y'a tout les pdf a parser dans fichiers_a_parser
 
-    return "Parsement effectué" 
-
-#Gestion -t -x 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Parseur de fichiers PDF')
-    parser.add_argument('-t', action='store_true', help='Option pour traitement normal (-t)')
-    parser.add_argument('-x', action='store_true', help='Option pour traitement spécial (-x)')
-
-    args = parser.parse_args()
-
-    fichiers_pdf = [fichier for fichier in os.listdir() if fichier.endswith('.pdf')]
-
-    if args.t:
-        parseur(fichiers_pdf, 't')
-    elif args.x:
-        parseur(fichiers_pdf, 'x')
-    else:
-        print("Veuillez spécifier une option -t ou -x.")
-
+    for x in fichiers_a_parser :
+        nom(x)
+      
+    #Faire la conversion pdf vers txt   
+    for y in fichiers_a_parser:
+        conversion(y)
 
         
+    #Liste de fichier texte
+    txt_nom = [y.replace(".pdf",".txt") for y in fichiers_a_parser]
+            
+    #Test extraction titre 
+    for t in txt_nom :
+        titre(t)
+        print(" ")
+
+    #Test extraction auteur
+    for t in txt_nom:
+        auteur(t)
+        print(" ")
+
+    #Test extraction abstract
+    for t in txt_nom:
+        abstract(t)
+        print("  ")
+
+    #Test extraction introduction
+    for t in txt_nom:
+        introduction(t)
+        print(" ")
+ 
+    #Test extraction corps  
+    for t in txt_nom:
+        corps(t)
+        print(" ")
+ 
+    #Test extraction conclusion
+    for t in txt_nom:
+        conclusion(t)
+        print(" ")
+    
+    #Test extraction acknowledgement
+    for t in txt_nom:
+        acknowledgement(t)
+        print(" ")
+
+    #Test extraction references
+    for t in txt_nom:
+        references(t)
+        print(" ")
+    
+    #Test extraction discussion
+    for t in txt_nom:
+        discussion(t)
+        print(" ")
+    
+    
+    
+fichiers_pdf = [fichier for fichier in os.listdir()]  
+parseur(fichiers_pdf)  
+    
+pdf_nom = ['Torres','ACL2004-HEADLINE','Boudin-Torres-2006','compression','compression_phrases_Prog-Linear-jair','hybrid_approach','marcu_statistics_sentence_pass_one','mikheev','probabilistic_sentence_reduction','Stolcke_1996_Automatic_linguistic']
+txt_nom = ['Torres.txt','ACL2004-HEADLINE.txt','Boudin-Torres-2006.txt','compression.txt','compression_phrases_Prog-Linear-jair.txt','hybrid_approach.txt','marcu_statistics_sentence_pass_one.txt','mikheev.txt','probabilistic_sentence_reduction.txt','Stolcke_1996_Automatic_linguistic.txt']
+
 
