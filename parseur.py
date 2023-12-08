@@ -404,9 +404,37 @@ def discussion(fichierTexte):
                 if discussion_started:
                     copie.write(line)
 
-           
+def nettoyage(fichier_texte):
+    caracteres_genants = ['\x00', '\x01', '\x02', '\x03', '\x04', '\x05', '\x06', '\x07', '\x08', '\x0B', '\x0C', '\x0E', '\x0F', '\x10', '\x11', '\x12', '\x13', '\x14', '\x15', '\x16', '\x17', '\x18', '\x19', '\x1A', '\x1B', '\x1C', '\x1D', '\x1E', '\x1F', '\x7F']
+    # Liste des caractères qui pourraient être problématiques dans un fichier
 
-def parseur(listePDF) :
+    with open(fichier_texte, 'r+', encoding='utf-8') as fichier_txt:
+        contenu = fichier_txt.read()
+
+        # Nettoyage du contenu en remplaçant les caractères gênants par une chaîne vide
+        contenu_nettoye = ''.join(char for char in contenu if char not in caracteres_genants)
+
+        # Positionnement du curseur au début du fichier pour écrire le contenu nettoyé
+        fichier_txt.seek(0)
+        fichier_txt.write(contenu_nettoye)
+        fichier_txt.truncate()
+
+
+
+
+def texte_en_xml(fichier_texte):
+    fichier_xml = f"{fichier_texte[:-4]}.xml"  # Crée le nom du fichier XML en remplaçant l'extension
+    with open(fichier_texte, 'r', encoding='utf-8') as fichier_txt:
+        contenu = fichier_txt.read()
+
+        # Reformate le contenu en XML valide
+        contenu_xml = f"<root>{contenu}</root>"  # Balise racine pour le contenu XML
+        # Écriture du contenu dans le fichier XML
+        with open(fichier_xml, 'w', encoding='utf-8') as fichier_xml_write:
+            fichier_xml_write.write(contenu_xml)
+
+
+def parseur(mode,listePDF) :  
     #Doit contenir les pdf
     fichiers_a_parser = []
 
@@ -429,62 +457,85 @@ def parseur(listePDF) :
     #Faire la conversion pdf vers txt   
     for y in fichiers_a_parser:
         conversion(y)
-
-        
+       
     #Liste de fichier texte
     txt_nom = [y.replace(".pdf",".txt") for y in fichiers_a_parser]
             
     #Test extraction titre 
     for t in txt_nom :
         titre(t)
-        print(" ")
 
     #Test extraction auteur
     for t in txt_nom:
         auteur(t)
-        print(" ")
 
     #Test extraction abstract
     for t in txt_nom:
         abstract(t)
-        print("  ")
 
     #Test extraction introduction
     for t in txt_nom:
         introduction(t)
-        print(" ")
  
     #Test extraction corps  
     for t in txt_nom:
         corps(t)
-        print(" ")
  
     #Test extraction conclusion
     for t in txt_nom:
         conclusion(t)
-        print(" ")
     
     #Test extraction acknowledgement
     for t in txt_nom:
         acknowledgement(t)
-        print(" ")
 
     #Test extraction references
     for t in txt_nom:
         references(t)
-        print(" ")
     
     #Test extraction discussion
     for t in txt_nom:
         discussion(t)
-        print(" ")
-    
-    
-#Recuperer uniquement les fichiers pdf    
-fichiers_pdf = [fichier for fichier in os.listdir() if Path(fichier).suffix.lower() == '.pdf']  
-parseur(fichiers_pdf)  
-    
-pdf_nom = ['Torres','ACL2004-HEADLINE','Boudin-Torres-2006','compression','compression_phrases_Prog-Linear-jair','hybrid_approach','marcu_statistics_sentence_pass_one','mikheev','probabilistic_sentence_reduction','Stolcke_1996_Automatic_linguistic']
-txt_nom = ['Torres.txt','ACL2004-HEADLINE.txt','Boudin-Torres-2006.txt','compression.txt','compression_phrases_Prog-Linear-jair.txt','hybrid_approach.txt','marcu_statistics_sentence_pass_one.txt','mikheev.txt','probabilistic_sentence_reduction.txt','Stolcke_1996_Automatic_linguistic.txt']
+        
+        
+    if mode=='x':
+        for t in txt_nom:
+            # Ajouter balise informations au début du fichier
+            with open(t.replace(".txt", "_copie.txt"), 'r+', encoding='utf-8') as fichier:
+                contenu = fichier.readlines()
+                nouvelle_ligne = "<informations>\n"
+                contenu.insert(0, nouvelle_ligne)
+                fichier.seek(0)
+                fichier.writelines(contenu)
 
+                # Se positionner à la fin du fichier pour ajouter la balise fermante
+                fichier.seek(0, 2)  # Aller à la fin du fichier
+                fichier.write("</informations>")
+            
+            nettoyage(t.replace(".txt", "_copie.txt"))
 
+            texte_en_xml(t.replace(".txt", "_copie.txt"))
+
+        
+       
+   
+if __name__ == "__main__":  
+    parser = argparse.ArgumentParser(description='Exemple de parseur')
+    parser.add_argument('-t', action='store_true', help='Option t')
+    parser.add_argument('-x', action='store_true', help='Option x')
+    
+    args = parser.parse_args()
+    
+    fichiers_pdf = [fichier for fichier in os.listdir() if Path(fichier).suffix.lower() == '.pdf']
+    
+    if args.t:
+        print("Mode t")
+        parseur("t", fichiers_pdf)
+    elif args.x:
+        print("Mode x")
+        parseur("x",fichiers_pdf)
+    else:
+        print("Aucune option sélectionnée.")
+    
+    
+    
