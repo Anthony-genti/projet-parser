@@ -1,5 +1,6 @@
 import subprocess
 import os
+import re
 
 #Conversion en utilisant pdftotext vers un fichier txt
 def conversion(nom_pdf):
@@ -15,7 +16,7 @@ def conversion(nom_pdf):
     return -1 ;
 
 
-#Injecter le nom dans le fichier texte de sortie : OK 
+#Recuperer le nom du fichier
 def nom(filename):
     nomFichier = filename.split('.pdf')[0]
     if ' ' in nomFichier:
@@ -35,7 +36,7 @@ def nom(filename):
         copie.write(f"<nom>{nom_fichier}</nom>")
 
    
-#Recuperer le titre du papier
+#Recuperer le titre du papier 
 def titre(fichierTexte):
     # Obtenir l'extension du fichier d'entrée
     nom_fichier, extension = fichierTexte.rsplit('.', 1)
@@ -50,6 +51,7 @@ def titre(fichierTexte):
     with open(fichierTexte, 'r', encoding='utf-8') as original:
         lignes = original.readlines()
         with open(fichier_copie, 'a', encoding='utf-8') as copie: 
+            copie.write("\n")
             copie.write("<titre>")          
             if len(lignes) > 0 and lignes[0].strip().isupper():
                 majuscule1 = True 
@@ -116,7 +118,8 @@ def titre(fichierTexte):
             return "Conversion titre terminée : texte après 'Journal' copié hormis Submitted"
 
 
-def introduction(fichier):
+#Recuperer l'introduction 
+def introduction(fichierTexte):
     # Obtenir l'extension du fichier d'entrée
     nom_fichier, extension = fichierTexte.rsplit('.', 1)
     
@@ -127,26 +130,33 @@ def introduction(fichier):
 
     with open(fichierTexte, 'r', encoding='utf-8') as original:
         lignes = original.readlines()        
-        with open(fichier_copie, 'w', encoding='utf-8') as copie:
+        with open(fichier_copie, 'a', encoding='utf-8') as copie:
             introduction_started = False
+            copie.write("\n")
+            copie.write("<introduction>")
             for line in lignes:
                 if line.startswith("Introduction") or line.startswith("I.") or line.startswith("1 Introduction") or line.startswith("1. Introduction") or line.startswith("INTRODUCTION") :
                     introduction_started = True              
 
                 if introduction_started and "deterministic model" in line:
                     copie.write(line)
+                    copie.write("</introduction>")
                     return "Ajout introduction jusqu'à la combinaison 'deterministic model'"
                 
                 if introduction_started and line.startswith("Method") :
+                    copie.write("</introduction>")
                     return "Ajout introduction jusqu'à la combinaison Method"
 
                 if introduction_started and line.startswith("II.") :
+                    copie.write("</introduction>")
                     return "Ajout introduction jusqu'au symbole II."
 
                 if introduction_started and line.startswith("2.") :
+                    copie.write("</introduction>")
                     return "Ajout introduction jusqu'au symbole 2."
 
                 if introduction_started and line.startswith("2") :
+                    copie.write("</introduction>")
                     return "Ajout introduction jusqu'au symbole 2 avec ligne avant vide"
                     
                 if introduction_started :
@@ -157,34 +167,40 @@ def introduction(fichier):
 
 def abstract(fichierTexte):
     # Obtenir l'extension du fichier d'entrée
-    nom_fichier, extension = fichierTexte.rsplit('.', 1)
-    
+    nom_fichier, extension = fichierTexte.rsplit('.', 1)   
     # Créer une copie distincte du fichier original avec la même extension
     fichier_copie = nom_fichier + '_copie.' + extension
 
     previous_line = '' 
 
     with open(fichierTexte, 'r', encoding='utf-8') as original:
-        lignes = original.readlines()        
-        with open(fichier_copie, 'w', encoding='utf-8') as copie:
-            abstract_started = False
+        lignes = original.readlines()   
+        abstract_started = False
+        with open(fichier_copie, 'a', encoding='utf-8') as copie:
+            copie.write("\n")
+            copie.write("<abstract>")            
             for line in lignes:
                 if line.startswith("Abstract") or line.startswith("Abstract-") or line.startswith("In this article") or line.startswith("ABSTRACT") :
                     abstract_started = True 
                 
                 if abstract_started and line.startswith("1") and previous_line.strip() == '' :
+                    copie.write("</abstract>")
                     return "Abstract extrait arret car lecture 1" 
                                   
                 if abstract_started and line.startswith("1 Introduction") :
+                    copie.write("</abstract>")
                     return "Abstract extrait arret car  1 Introduction" 
                 
                 if abstract_started and line.startswith("I.") :
+                    copie.write("</abstract>")
                     return "Abstract extrait arret car lecture I." 
                 
                 if abstract_started and line.startswith("Introduction") :
+                    copie.write("</abstract>")
                     return "Abstract extrait arret car lecture Introduction" 
                 
                 if abstract_started and line.startswith("1. Introduction") :
+                    copie.write("</abstract>")
                     return "Abstract extrait arret car lecture 1. Introduction" 
                 
                 if abstract_started :
@@ -193,9 +209,53 @@ def abstract(fichierTexte):
                 previous_line = line 
    
 
-##recuperer ce qu'il y'a entre la fin du titre et l'abstract
+#Recuperer auteur
 def auteur(fichierTexte):
-    return 0 ;
+   # Obtenir l'extension du fichier d'entrée
+    nom_fichier, extension = fichierTexte.rsplit('.', 1)
+    
+    # Créer une copie distincte du fichier original avec la même extension
+    fichier_copie = nom_fichier + '_copie.' + extension
+
+    ligneTitre=''  
+   
+    with open(fichier_copie, 'r') as file:
+        texte = file.read()
+        resultat = re.search(r'<titre>(.*?)</titre>', texte, re.DOTALL)
+        ligneTitre=resultat.group(1).strip().split('\n')
+            
+
+    with open(fichierTexte, 'r', encoding='utf-8') as original:
+        lignes = original.readlines()
+        with open(fichier_copie, 'r+', encoding='utf-8') as copie:
+            copie.write("<auteur>") 
+            for line in lignes :
+                if (line.startswith("Abstract") or line.startswith("Abstract-") or line.startswith("In this article") or line.startswith("ABSTRACT")) :
+                    copie.write("</auteur>")
+                    return  
+                for x in ligneTitre :
+                    if not x in line :
+                        copie.write(line)
+                        break
+                        
+                
+    
+  
+    
+    
+    
+    
+    
+    
+                
+        for line in ligne_copy :
+            if "</titre>" in line: 
+                copie.write("</auteur>")
+                return
+            else :
+                if not ligneTitre in line and not "<nom>" in line :
+                        copie.write(line) 
+   
 
 
 pdf_nom = ['Torres','ACL2004-HEADLINE','Boudin-Torres-2006','compression','compression_phrases_Prog-Linear-jair','hybrid_approach','marcu_statistics_sentence_pass_one','mikheev','probabilistic_sentence_reduction','Stolcke_1996_Automatic_linguistic']
@@ -212,27 +272,30 @@ for y in pdf_nom:
     txt_output = conversion(y)
     print(f"Fichier texte converti : {y}")
     print(" ")
-
+    
 #Test extraction titre 
 for t in txt_nom :
    titre(t)
    print(" ")
 
-#Test extraction introduction
-#for t in txt_nom:
-    #print(t)
-    #print(introduction(t))
-    #print("********************************************************************")
-    
-    
+#Test extraction auteur
+for t in txt_nom:
+    auteur(t)
+    print(" ")
+
 #Test extraction abstract
 #for t in txt_nom:
-    #print(t)
-    #print(abstract(t))
-    #print("-----------------------------------------------------------------------")
+    #abstract(t)
+    #print("  ")
+
+#Test extraction introduction
+#for t in txt_nom:
+    #introduction(t)
+    #print(" ")
+        
 
 
-#Test extraction auteur
+
 
 #Test extraction introduction
 
