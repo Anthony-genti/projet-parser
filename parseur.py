@@ -175,7 +175,8 @@ def introduction(fichierTexte):
                     copie.write(line)
 
                 previous_line = line
-
+                
+            copie.write("</introduction>")
 
 def corps(fichierTexte):
     # Obtenir l'extension du fichier d'entrée
@@ -216,11 +217,12 @@ def corps(fichierTexte):
 
                 if introduction_started and line.startswith("2") :
                     corps_started = True
+
                     
                 if corps_started :
                     copie.write(line)
                     
-               
+            copie.write("</corps>")   
 def acknowledgement(fichierTexte):
     # Obtenir l'extension du fichier d'entrée
     nom_fichier, extension = fichierTexte.rsplit('.', 1)
@@ -246,7 +248,7 @@ def acknowledgement(fichierTexte):
                     return 
                 if acknowledgement_started :
                     copie.write(line)
-            
+            copie.write("</acknowledgement>")
 
 
 def abstract(fichierTexte):
@@ -291,6 +293,7 @@ def abstract(fichierTexte):
                     copie.write(line)
                                       
                 previous_line = line 
+            copie.write("</abstract>")
    
 
 #Recuperer auteur
@@ -303,7 +306,7 @@ def auteur(fichierTexte):
 
     ligneTitre=''  
    
-    with open(fichier_copie, 'r') as file:
+    with open(fichier_copie, 'r', encoding='utf-8') as file:
         texte = file.read()
         resultat = re.search(r'<titre>(.*?)</titre>', texte, re.DOTALL)
         if resultat:
@@ -330,7 +333,7 @@ def auteur(fichierTexte):
                 if not x1 in line :
                     if not x2 in line :
                         copie.write(line)
-                        
+            copie.write("</auteur>")
                                
 def conclusion(fichierTexte):
     # Obtenir l'extension du fichier d'entrée
@@ -346,7 +349,7 @@ def conclusion(fichierTexte):
             copie.write("\n")
             copie.write("<conclusion>")
             for line in lignes:
-                if "VI. C ONCLUSIONS" in line or "Conclusion" in line or "CONCLUSIONS" in line or "Conclusions" in line :
+                if "VI. C ONCLUSIONS" in line or line.startswith("VI. C") or "Conclusion" in line or "CONCLUSIONS" in line or "Conclusions" in line :
                     conclusion_started = True              
 
                 if conclusion_started and "Acknowledgements" in line or "References" in line or "ACKNOWLEDGMENT" in line or "Acknowledgments" in line:
@@ -355,6 +358,7 @@ def conclusion(fichierTexte):
 
                 if conclusion_started :
                     copie.write(line)
+            copie.write("</conclusion>")
                 
 
 
@@ -372,7 +376,7 @@ def references(fichierTexte):
             copie.write("\n")
             copie.write("<references>")
             for line in lignes:
-                if "References" in line or "Références" in line or "R EFERENCES" in line or line.startswith("REFERENCES") :
+                if line.startswith("References") or line.startswith("Références") or line.startswith("R EFERENCES") or line.startswith("REFERENCES") :
                     references_started = True              
                 if references_started :
                     copie.write(line)
@@ -394,15 +398,16 @@ def discussion(fichierTexte):
             copie.write("\n")
             copie.write("<discussion>")
             for line in lignes:
-                if "Discussion" in line or "DISCUSSION" in line :
+                if "Discussion" in line or "DISCUSSION" in line or line.startswith("DISCUSSION") :
                     discussion_started=True
                 
-                if discussion_started and "Acknowledgments" in line or "Conclusions" in line or "7. CONCLUSIONS" in line :
+                if discussion_started and "Acknowledgments" in line or "Conclusions" in line or "7. CONCLUSIONS" in line or "References" in line:
                     copie.write("</discussion>")
                     return 
           
                 if discussion_started:
                     copie.write(line)
+            copie.write("</discussion>")
 
 def nettoyage(fichier_texte):
     caracteres_genants = ['\x00', '\x01', '\x02', '\x03', '\x04', '\x05', '\x06', '\x07', '\x08', '\x0B', '\x0C', '\x0E', '\x0F', '\x10', '\x11', '\x12', '\x13', '\x14', '\x15', '\x16', '\x17', '\x18', '\x19', '\x1A', '\x1B', '\x1C', '\x1D', '\x1E', '\x1F', '\x7F']
@@ -417,8 +422,6 @@ def nettoyage(fichier_texte):
         # Positionnement du curseur au début du fichier pour écrire le contenu nettoyé
         fichier_txt.seek(0)
         fichier_txt.write(contenu_nettoye)
-        fichier_txt.truncate()
-
 
 
 
@@ -512,8 +515,8 @@ def parseur(mode,listePDF) :
                 fichier.seek(0, 2)  # Aller à la fin du fichier
                 fichier.write("</informations>")
             
-            nettoyage(t.replace(".txt", "_copie.txt"))
-
+            #nettoyage(t.replace(".txt", "_copie.txt"))
+           
             texte_en_xml(t.replace(".txt", "_copie.txt"))
 
         
