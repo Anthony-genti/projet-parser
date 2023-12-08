@@ -222,44 +222,64 @@ def auteur(fichierTexte):
     with open(fichier_copie, 'r') as file:
         texte = file.read()
         resultat = re.search(r'<titre>(.*?)</titre>', texte, re.DOTALL)
-        ligneTitre=resultat.group(1).strip().split('\n')
+        if resultat:
+            ligneTitre = resultat.group(1).strip().split('\n')
+            if len(ligneTitre) >= 2:
+                x1 = ligneTitre[0][:10]
+                x2 = ligneTitre[1][:10]
+
+            else:
+               x1 = ligneTitre[0][:10]
+               x2 = x1
             
 
     with open(fichierTexte, 'r', encoding='utf-8') as original:
         lignes = original.readlines()
-        with open(fichier_copie, 'r+', encoding='utf-8') as copie:
+        with open(fichier_copie, 'a', encoding='utf-8') as copie:
+            copie.write("\n") 
             copie.write("<auteur>") 
             for line in lignes :
                 if (line.startswith("Abstract") or line.startswith("Abstract-") or line.startswith("In this article") or line.startswith("ABSTRACT")) :
                     copie.write("</auteur>")
-                    return  
-                for x in ligneTitre :
-                    if not x in line :
+                    return   
+                                   
+                if not x1 in line :
+                    if not x2 in line :
                         copie.write(line)
-                        break
                         
+                               
+def conclusion(fichierTexte):
+    # Obtenir l'extension du fichier d'entrée
+    nom_fichier, extension = fichierTexte.rsplit('.', 1)
+    
+    # Créer une copie distincte du fichier original avec la même extension
+    fichier_copie = nom_fichier + '_copie.' + extension
+
+    with open(fichierTexte, 'r', encoding='utf-8') as original:
+        lignes = original.readlines()        
+        with open(fichier_copie, 'a', encoding='utf-8') as copie:
+            conclusion_started = False
+            copie.write("\n")
+            copie.write("<conclusion>")
+            for line in lignes:
+                if "VI. C ONCLUSIONS" in line or "Conclusion" in line or "CONCLUSIONS" in line or "Conclusions" in line :
+                    conclusion_started = True              
+
+                if conclusion_started and ("Acknowledgements" or "References" or "ACKNOWLEDGMENT") in line:
+                    copie.write("</conclusion>")
+                    return 
+
+                if conclusion_started :
+                    copie.write(line)
                 
-    
-  
-    
-    
-    
-    
-    
-    
-                
-        for line in ligne_copy :
-            if "</titre>" in line: 
-                copie.write("</auteur>")
-                return
-            else :
-                if not ligneTitre in line and not "<nom>" in line :
-                        copie.write(line) 
-   
+
 
 
 pdf_nom = ['Torres','ACL2004-HEADLINE','Boudin-Torres-2006','compression','compression_phrases_Prog-Linear-jair','hybrid_approach','marcu_statistics_sentence_pass_one','mikheev','probabilistic_sentence_reduction','Stolcke_1996_Automatic_linguistic']
 txt_nom = ['Torres.txt','ACL2004-HEADLINE.txt','Boudin-Torres-2006.txt','compression.txt','compression_phrases_Prog-Linear-jair.txt','hybrid_approach.txt','marcu_statistics_sentence_pass_one.txt','mikheev.txt','probabilistic_sentence_reduction.txt','Stolcke_1996_Automatic_linguistic.txt']
+
+
+
 
 
 #Afficher le nom et append dans le fichier copie
@@ -284,18 +304,17 @@ for t in txt_nom:
     print(" ")
 
 #Test extraction abstract
-#for t in txt_nom:
-    #abstract(t)
-    #print("  ")
+for t in txt_nom:
+    abstract(t)
+    print("  ")
 
 #Test extraction introduction
-#for t in txt_nom:
-    #introduction(t)
-    #print(" ")
+for t in txt_nom:
+    introduction(t)
+    print(" ")
         
-
-
-
-
-#Test extraction introduction
+#Test extraction conclusion
+for t in txt_nom:
+    conclusion(t)
+    print(" ")
 
